@@ -70,3 +70,21 @@ class Customer(Base):
 
     def delete_reviews(self, restaurant):
         session.query(Review).filter(Review.restaurant == restaurant, Review.customer == self).delete()
+
+
+class Review(Base):
+    __tablename__ = 'reviews'
+    id = Column(Integer(), primary_key=True)
+    star_rating = Column(Integer())
+    created_at = Column(DateTime(), server_default=func.now())
+
+    restaurant_id = Column(Integer(), ForeignKey('restaurants.id'))
+    customer_id = Column(Integer(), ForeignKey('customers.id'))
+
+    def full_review(self):
+        return f'Review for {self.restaurant.name} by {self.customer.full_name}: {self.star_rating} stars'
+
+    def __repr__(self):
+        return f'Review(id={self.id}, ' + \
+            f'star_rating={self.star_rating}, ' + \
+            f'created_at={self.created_at})'
