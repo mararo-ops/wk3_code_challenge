@@ -30,3 +30,34 @@ if __name__ == '__main__':
     session.add_all([review1, review2, review3])
     session.commit()
 
+# Test various methods
+    # Example 1: Get the fanciest restaurant
+    fancy_restaurant = restaurant1.fanciest()
+    print(f'The fanciest restaurant is: {fancy_restaurant.name}')
+
+    # Example 2: Get all reviews for a restaurant
+    all_reviews = restaurant1.all_reviews()
+    print('All reviews for Restaurant 1:')
+    print(all_reviews)
+
+    reviewed_restaurants = customer1.restaurants
+    print(f"{customer1.full_name} has reviewed the following restaurants:")
+    for restaurant in reviewed_restaurants:
+        print(restaurant.name)
+
+    # Example 3: Get the favorite restaurant for a customer
+    favorite = customer1.favorite_restaurant()
+    print(f"{customer1.full_name}'s favorite restaurant is: {favorite.name}")
+
+    # Example 4: Add a new review for a restaurant
+    new_review = Review(star_rating=4, restaurant=restaurant2, customer=customer2)
+    session.add(new_review)
+    session.commit()
+    print("Added a new review")
+
+    # Example 5: Delete reviews for a restaurant by a customer
+    customer1.delete_reviews(restaurant1)
+    session.commit()
+    print(f"Reviews for {customer1.full_name} at {restaurant1.name} have been deleted.")
+
+    session.close()  # Close the session
