@@ -30,3 +30,17 @@ def create_fake_review(restaurant, customer):
         customer=customer
     )
 
+
+if __name__ == '__main__':
+    # Generate fake data and add it to the database
+    for _ in range(10):  # Change the number to control the number of records
+        restaurant = create_fake_restaurant()
+        customer = create_fake_customer()
+        session.add_all([restaurant, customer])
+        session.commit()
+
+        review = create_fake_review(restaurant, customer)
+        session.add(review)
+        session.commit()
+
+    session.close()
