@@ -39,3 +39,34 @@ class Restaurant(Base):
         return f'Restaurant(id={self.id}, ' + \
             f'name={self.name}, ' + \
             f'created_at={self.created_at})'
+
+
+class Customer(Base):
+    __tablename__ = 'customers'
+    id = Column(Integer(), primary_key=True)
+    full_name = Column(String())
+
+    reviews = relationship('Review', backref=backref('customer'))
+    restaurants = relationship('Restaurant', secondary=restaurant_customer, back_populates='customers')
+
+    def __repr__(self):
+        return f'Customer(id={self.id}, ' + \
+            f'name={self.full_name})'
+
+    def favorite_restaurant(self):
+        favorite_restaurant = (
+            session.query(Restaurant)
+            .join(Review)
+            .filter(Review.customer == self)
+            .order_by(Review.star_rating.desc())
+            .first()
+        )
+        return favorite_restaurant
+
+    def add_review(self, restaurant, rating):
+        new_review = Review(star_rating=rating, restaurant=restaurant, customer=self)
+        session.add(new_review)
+        session.commit()
+
+    def delete_reviews(self, restaurant):
+        session.query(Review).filter(Review.restaurant == restaurant, Review.customer == self).delete()
