@@ -1,0 +1,31 @@
+CREATE TABLE customers (
+  id INT NOT NULL AUTO_INCREMENT,
+  full_name VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE restaurant_customers (
+  restaurant_id INT NOT NULL,
+  customer_id INT NOT NULL,
+  PRIMARY KEY (restaurant_id, customer_id),
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants (id),
+  FOREIGN KEY (customer_id) REFERENCES customers (id)
+);
+
+CREATE TABLE restaurants (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  price INT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE reviews (
+  id INT NOT NULL AUTO_INCREMENT,
+  star_rating INT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  restaurant_id INT NOT NULL,
+  customer_id INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants (id),
+  FOREIGN KEY (customer_id) REFERENCES customers (id)
+);
