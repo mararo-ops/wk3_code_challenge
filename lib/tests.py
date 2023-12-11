@@ -25,3 +25,8 @@ if __name__ == '__main__':
     review1 = Review(star_rating=4, restaurant=restaurant1, customer=customer1)
     review2 = Review(star_rating=5, restaurant=restaurant2, customer=customer1)
     review3 = Review(star_rating=3, restaurant=restaurant1, customer=customer2)
+
+ # Add the reviews to the session and commit the changes
+    session.add_all([review1, review2, review3])
+    session.commit()
+
